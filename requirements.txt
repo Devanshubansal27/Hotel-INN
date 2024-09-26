@@ -1,6 +1,2 @@
 streamlit
 xgboost
-pandas
-numpy
-pickle
-sklearn
