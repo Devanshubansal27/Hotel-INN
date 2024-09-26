@@ -21,7 +21,7 @@ def prediction(input_data):
 def main():
     st.title('INN Hotels')
     import streamlit as st
-    st.image('hotelimage.png', use_column_width=True)
+    st.image('hotelimage.jpg', use_column_width=True)
 
 # Run the app with: streamlit run script_name.py
     lt=st.text_input('Enter Lead time')
