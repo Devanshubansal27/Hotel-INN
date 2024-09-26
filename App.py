@@ -22,8 +22,6 @@ def main():
     st.title('INN Hotels')
     import streamlit as st
     st.image('hotelimage.jpg', use_column_width=True)
-
-# Run the app with: streamlit run script_name.py
     lt=st.text_input('Enter Lead time')
     mkt=(lambda x : 1 if x =='Online' else 0)(st.selectbox('Enter the type of booking',['Online','Offline']))
     spcl=st.selectbox('How many special requests have been made?',[0,1,2,3,4,5])
