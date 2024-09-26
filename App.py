@@ -9,6 +9,8 @@ with open('Final_model_xgb.pkl','rb')as file:
 
 #input_data = [[lt,mst,spcl,price,adul,wkend,park,wk,ar_d,ar_m,ar_w]]
 def prediction(input_data):
+    input_data=np.array(input_data,dtype='object)
+
     pred=model.predict_proba(input_data)[:,1][0]
     
     if pred>0.5:
