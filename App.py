@@ -29,7 +29,7 @@ def main():
     """)
     
     # Banner image (you can add a hotel banner or related image here)
-    st.image('hotel_banner.jpg', use_container_width=True)
+    #st.image('hotel_banner.jpg', use_container_width=True)
 
     # Create a form layout for the input fields
     with st.form(key="booking_form"):
