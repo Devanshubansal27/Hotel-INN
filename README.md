@@ -1,6 +1,6 @@
 # Hotel Inn - AI-Powered Booking Cancellation Predictor 🏨
 
-![Banner](<img width="530" alt="Screenshot 2025-02-06 at 6 05 27 PM" src="https://github.com/user-attachments/assets/5c1a06b9-3820-4e3c-b72c-97061d800a02" />
+![Banner](<img width="530" alt="hotel-inn" src="https://github.com/user-attachments/assets/eb7cfc61-dd30-4487-9c06-ff76fa955c98" />
 )
 
 Hotel Inn is an AI-powered Streamlit application designed to predict the likelihood of booking cancellations. The app uses a machine learning model to assess booking details and predict the chances of cancellation based on various features like lead time, booking type, special requests, and more.
