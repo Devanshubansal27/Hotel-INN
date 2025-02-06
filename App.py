@@ -29,13 +29,13 @@ def main():
     wknd=st.text_input('How many weekend nights?')
     prk=(lambda x : 1 if x=='Yes' else 0)(st.selectbox('Does booking includes parking facility.',['Yes','No']))
     wk=st.text_input('How many weekday nights')
-    arr_d=st.slider('What will be the day of arrival.',min_value=1,max_value=31,step=1)
-    arr_mon=st.slider('What will be the month of arrival.',min_value=1,max_value=12,step=1)
-    week_lambda= (lambda x : 0 if x=='Mon' else 1 if x=='Tue' else 2 if x=='Wed' else 3 
-                  if x=='Thus' else 4 if x=='Fri' else 5 if x=='Sat' else 6 )
-    arr_wd= week_lambda(st.selectbox('What is the Weekday of arrival?.',['Mon','Tue','Wed','Thus','Fri','Sat','Sun']))
+    arr_d=st.date_input('What will be the date of arrival.')
+    #arr_mon=st.slider('What will be the month of arrival.',min_value=1,max_value=12,step=1)
+    #week_lambda= (lambda x : 0 if x=='Mon' else 1 if x=='Tue' else 2 if x=='Wed' else 3 
+                  #if x=='Thus' else 4 if x=='Fri' else 5 if x=='Sat' else 6 )
+    #arr_wd= week_lambda(st.selectbox('What is the Weekday of arrival?.',['Mon','Tue','Wed','Thus','Fri','Sat','Sun']))
 
-    input_data = [[lt,mkt,spcl,price,adults,wknd,prk,wk,arr_d,arr_mon,arr_wd]]
+    input_data = [[lt,mkt,spcl,price,adults,wknd,prk,wk,arr_d]]
 
 
     if st.button('Predict'):
