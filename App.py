@@ -4,9 +4,11 @@ import pandas as pd
 import pickle 
 from xgboost import XGBClassifier
 
-with open('Final_model_xgb.pkl','rb') as file:
+# Load the model
+with open('Final_model_xgb.pkl', 'rb') as file:
     model = pickle.load(file)
 
+# Prediction function
 def prediction(input_data):
     input_data = np.array(input_data, dtype='object')
     pred = model.predict_proba(input_data)[:, 1][0]
@@ -16,41 +18,63 @@ def prediction(input_data):
     else:
         return f'This Booking is less likely to get cancelled: Chances={round(pred * 100, 2)}%'
 
+# Main function to render the Streamlit app
 def main():
-    st.title('INN Hotels')
-    st.image('hotelimage.jpg', use_column_width=True)
+    # Title and header
+    st.title('INN Hotels Booking Prediction')
+    st.markdown("""
+    Welcome to **INN Hotels** booking prediction model!  
+    This model predicts the likelihood of a booking being canceled based on various inputs.
+    Please provide the following details about the booking.
+    """)
     
-    lt = st.text_input('Enter Lead time')
-    mkt = (lambda x: 1 if x == 'Online' else 0)(st.selectbox('Enter the type of booking', ['Online', 'Offline']))
-    spcl = st.selectbox('How many special requests have been made?', [0, 1, 2, 3, 4, 5])
-    price = st.text_input('Enter the price of the room.')
-    adults = st.selectbox('How many Adults per room?', [1, 2, 3, 4])
-    wknd = st.text_input('How many weekend nights?')
-    prk = (lambda x: 1 if x == 'Yes' else 0)(st.selectbox('Does booking include parking facility?', ['Yes', 'No']))
-    wk = st.text_input('How many weekday nights')
-    
-    # Use date_input to get the arrival date
-    arr_d = st.date_input('What will be the date of arrival.')
-    
-    # Extract the day, month, and weekday from arr_d
-    arr_day = arr_d.day  # Day of the month
-    arr_month = arr_d.month  # Month
-    arr_weekday = arr_d.weekday()  # Weekday (0 = Monday, 6 = Sunday)
+    # Banner image (you can add a hotel banner or related image here)
+    st.image('hotel_banner.jpg', use_container_width=True)
 
-    # Mapping weekday (0=Mon, 1=Tue, ..., 6=Sun) to your model's format
-    week_lambda = (lambda x: 0 if x == 'Mon' else 1 if x == 'Tue' else 2 if x == 'Wed' else 3
-                   if x == 'Thu' else 4 if x == 'Fri' else 5 if x == 'Sat' else 6)
-    
-    # If you need the exact weekday name (e.g., Mon, Tue, etc.), use this mapping
-    weekday_map = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    arr_wd = arr_weekday  # Directly use the weekday number
+    # Create a form layout for the input fields
+    with st.form(key="booking_form"):
+        # Lead Time (number input for better UX)
+        lt = st.number_input('Lead time (in days)', min_value=0, step=1)
+        
+        # Type of Booking (selectbox)
+        mkt = st.selectbox('Type of Booking', ['Online', 'Offline'], help="Choose whether the booking is made online or offline.")
+        
+        # Special Requests (dropdown to select the number of special requests)
+        spcl = st.selectbox('Number of Special Requests', [0, 1, 2, 3, 4, 5], help="How many special requests have been made?")
+        
+        # Price of the room (number input for better UX)
+        price = st.number_input('Price of the Room (in USD)', min_value=0.0, format="%.2f", help="Enter the price of the room.")
 
-    # Create input_data array to be passed to the model
-    input_data = [[lt, mkt, spcl, price, adults, wknd, prk, wk, arr_day, arr_month, arr_wd]]
+        # Number of Adults (selectbox)
+        adults = st.selectbox('Number of Adults per Room', [1, 2, 3, 4], help="How many adults will stay in the room?")
+        
+        # Weekend Nights (number input)
+        wknd = st.number_input('Number of Weekend Nights', min_value=0, step=1, help="How many weekend nights are booked?")
+        
+        # Parking Availability (selectbox with "Yes" or "No")
+        prk = st.selectbox('Includes Parking Facility?', ['Yes', 'No'], help="Does the booking include parking?")
+        
+        # Weekday Nights (number input)
+        wk = st.number_input('Number of Weekday Nights', min_value=0, step=1, help="How many weekday nights are booked?")
+        
+        # Arrival Date (Date picker for arrival date)
+        arr_d = st.date_input('Arrival Date', help="Select the date of arrival.")
+        
+        # Extract Day, Month, and Weekday from arrival date
+        arr_day = arr_d.day
+        arr_month = arr_d.month
+        arr_weekday = arr_d.weekday()  # Weekday (0 = Monday, 6 = Sunday)
+        
+        # Create the input data for the prediction model
+        input_data = [[lt, 1 if mkt == 'Online' else 0, spcl, price, adults, wknd, 1 if prk == 'Yes' else 0, wk, arr_day, arr_month, arr_weekday]]
 
-    if st.button('Predict'):
-        response = prediction(input_data)
-        st.success(response)
+        # Submit Button
+        submit_button = st.form_submit_button(label='Predict')
+
+        if submit_button:
+            # Perform prediction
+            response = prediction(input_data)
+            st.success(response)
 
 if __name__ == '__main__':
     main()
